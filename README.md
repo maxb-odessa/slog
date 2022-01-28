@@ -1,4 +1,4 @@
-# sconf
+# slog
 extremely Simple LOGger
 
 ## why?
