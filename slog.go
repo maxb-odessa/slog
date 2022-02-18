@@ -65,7 +65,7 @@ func Fatal(args ...interface{}) {
 
 // Debug logs DEBUG messages at specified debug level
 func Debug(lvl int, args ...interface{}) {
-	if lvl >= debug {
+	if lvl <= debug {
 		genLog(fmt.Sprintf("DBG%d", lvl), args[0].(string), args[1:]...)
 	}
 }
