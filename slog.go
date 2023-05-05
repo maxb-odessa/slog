@@ -74,10 +74,11 @@ func Debug(lvl int, args ...interface{}) {
 	prefix := ""
 	pc, file, no, ok := runtime.Caller(1)
 	if ok {
-		prefix = fmt.Sprintf("%s:%d", file, no)
 		details := runtime.FuncForPC(pc)
 		if details != nil {
-			prefix += details.Name() + "()"
+			prefix += fmt.Sprintf("%s():%d", details.Name(), no)
+		} else {
+			prefix = fmt.Sprintf("%s:%d", file, no)
 		}
 		prefix += " "
 	}
