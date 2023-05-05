@@ -5,6 +5,7 @@ package slog
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"sync"
 	"time"
 )
@@ -65,7 +66,21 @@ func Fatal(args ...interface{}) {
 
 // Debug logs DEBUG messages at specified debug level
 func Debug(lvl int, args ...interface{}) {
-	if lvl <= debug {
-		genLog(fmt.Sprintf("DBG%d", lvl), args[0].(string), args[1:]...)
+
+	if lvl > debug {
+		return
 	}
+
+	prefix := ""
+	pc, file, no, ok := runtime.Caller(1)
+	if ok {
+		prefix = fmt.Sprintf("%s:%d", file, no)
+		details := runtime.FuncForPC(pc)
+		if details != nil {
+			prefix += details.Name() + "()"
+		}
+		prefix += " "
+	}
+	genLog(fmt.Sprintf("DBG%d", lvl), prefix+args[0].(string), args[1:]...)
+
 }
